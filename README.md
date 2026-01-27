@@ -15,6 +15,8 @@ BloquinhoPy is an offline-first Python IDE for Android focused on a simple noteb
 ## 🏗️ Architecture
 
 ### Project Structure
+- ✅ **Phase 4**: Cell Output UI (Display execution results, formatted outputs)
+- 🚧 **Phase 5**: Alpha Testing (Python execution, .ipynb serialization, notebook persistence)
 ```
 app/src/main/java/io/github/bcmaymonegalvao/bloquinhopy/
 ├── di/                      # Dependency Injection (Hilt Modules)
@@ -195,6 +197,35 @@ cd bloquinho-python
 - 100MB free storage
 - USB debugging enabled
 
+
+## 🧪 Alpha Testing
+
+### Building from Source
+
+1. Clone the repository:
+```bash
+git clone https://github.com/bcmaymonegalvao/bloquinho-python.git
+cd bloquinho-python
+```
+
+2. Open in Android Studio (Hedgehog or later)
+
+3. Sync Gradle and build the project
+
+4. Run on your device or emulator
+
+### Testing Python Execution
+
+- Create new cells and execute Python code
+- Test basic Python expressions: `print("Hello")`, `2 + 2`, etc.
+- Check output display in cell results
+- Verify error handling for invalid code
+
+### Known Limitations
+
+- 🚧 .ipynb file save/load UI not yet implemented (functions available in ViewModel)
+- 🚧 Limited Python standard library (Chaquopy constraints)
+- 🚧 No external package installation yet
 
 ---
 
