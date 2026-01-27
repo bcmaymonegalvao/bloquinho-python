@@ -1,6 +1,6 @@
-
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.chaquopy)
 }
 
 android {
@@ -9,6 +9,13 @@ android {
 
     defaultConfig {
         minSdk = 26
+        
+        python {
+            buildPython("python3")
+            pip {
+                install("numpy")
+            }
+        }
     }
 }
 
