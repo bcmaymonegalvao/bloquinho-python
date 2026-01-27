@@ -262,9 +262,42 @@ cd bloquinho-python
 
 For a detailed timeline of future releases (alpha, beta and production) see [docs/ROADMAP.md](docs/ROADMAP.md).
 
-## 📱 Play Store release roadmap
+## 📦 GitHub Releases Distribution
 
-**Phase 5: Alpha testing** (in progress) – Chaquopy integration and notebook persistence are complete. Internal testing is available; you can build and test the app now.
+BloquinhoPy is distributed via **GitHub Releases** instead of the Play Store. This allows direct APK distribution without app store review process.
+
+### How to get BloquinhoPy
+
+1. Visit the [Releases page](https://github.com/bcmaymonegalvao/bloquinho-python/releases)
+2. Download the latest `app-release.apk`
+3. Transfer to your Android device
+4. Enable "Install from Unknown Sources" in Settings > Security
+5. Tap the APK file and follow the installation prompts
+
+### System Requirements
+- Android 8.0 (API 26) or higher
+- 100MB free storage space
+- 2GB RAM minimum
+
+### Build APK from Source
+
+For developers interested in building the latest development version:
+
+```bash
+# Clone the repository
+git clone https://github.com/bcmaymonegalvao/bloquinho-python.git
+cd bloquinho-python
+
+# Build debug APK
+./gradlew assembleDebug
+
+# Install on device
+./gradlew installDebug
+```
+
+For detailed release workflow and setup instructions, see [RELEASES_SETUP.md](RELEASES_SETUP.md).
+
+
 
 **Phase 6: Beta release** (planned) – Focus on performance optimisation, UI/UX polish and security. Distribution via Firebase App Distribution.
 
