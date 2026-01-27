@@ -94,5 +94,22 @@ class NotebookViewModel @Inject constructor(
                 }
             )
         }
+
+    /**
+     * Save current notebook to .ipynb format.
+     */
+    fun saveNotebook(): String {
+        return NotebookSerializer.toIpynb(_uiState.value.cells)
+    }
+    
+    /**
+     * Load notebook from .ipynb JSON string.
+     */
+    fun loadNotebook(ipynb: String) {
+        val loadedCells = NotebookSerializer.fromIpynb(ipynb)
+        _uiState.update { state ->
+            state.copy(cells = loadedCells)
+        }
+    }
     }
 }
