@@ -22,14 +22,16 @@ data class CellState(
 
 data class NotebookUiState(
     val cells: List<CellState> = listOf(CellState(NotebookCellId(0))),
-    val isExecuting: Boolean = false
+    val isExecuting: Boolean = false,
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null,
+    val lastSavedPath: String? = null
 )
 
 @HiltViewModel
 class NotebookViewModel @Inject constructor(
     private val engine: NotebookEngine
 ) : ViewModel() {
-
     private val _uiState = MutableStateFlow(NotebookUiState())
     val uiState: StateFlow<NotebookUiState> = _uiState.asStateFlow()
 
@@ -60,8 +62,10 @@ class NotebookViewModel @Inject constructor(
             try {
                 val output = engine.execute(cell.code)
                 _updateCellOutput(id, listOf(output))
+                _clearError()
             } catch (e: Exception) {
                 _updateCellOutput(id, listOf(NotebookOutput.Error(e.message ?: "Unknown error")))
+                _setError(e.message ?: "Execution error")
             } finally {
                 _updateCellRunning(id, false)
             }
@@ -72,6 +76,48 @@ class NotebookViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value.cells.forEach { cell ->
                 runCell(cell.id)
+            }
+        }
+    }
+
+    /**
+     * Save current notebook to .ipynb format.
+     * Returns the serialized notebook as a JSON string.
+     */
+    fun saveNotebook(): String {
+        return try {
+            _setLoading(true)
+            val content = NotebookSerializer.toIpynb(_uiState.value.cells)
+            _clearError()
+            content
+        } catch (e: Exception) {
+            _setError("Failed to serialize notebook: ${e.message}")
+            throw e
+        } finally {
+            _setLoading(false)
+        }
+    }
+    
+    /**
+     * Load notebook from .ipynb JSON string.
+     */
+    fun loadNotebook(ipynb: String) {
+        viewModelScope.launch {
+            try {
+                _setLoading(true)
+                val loadedCells = NotebookSerializer.fromIpynb(ipynb)
+                _uiState.update { state ->
+                    state.copy(
+                        cells = loadedCells,
+                        errorMessage = null
+                    )
+                }
+                _clearError()
+            } catch (e: Exception) {
+                _setError("Failed to load notebook: ${e.message}")
+                throw e
+            } finally {
+                _setLoading(false)
             }
         }
     }
@@ -94,22 +140,21 @@ class NotebookViewModel @Inject constructor(
                 }
             )
         }
-
-    /**
-     * Save current notebook to .ipynb format.
-     */
-    fun saveNotebook(): String {
-        return NotebookSerializer.toIpynb(_uiState.value.cells)
     }
-    
-    /**
-     * Load notebook from .ipynb JSON string.
-     */
-    fun loadNotebook(ipynb: String) {
-        val loadedCells = NotebookSerializer.fromIpynb(ipynb)
+
+    private fun _setLoading(isLoading: Boolean) {
         _uiState.update { state ->
-            state.copy(cells = loadedCells)
+            state.copy(isLoading = isLoading)
         }
     }
+
+    private fun _setError(message: String?) {
+        _uiState.update { state ->
+            state.copy(errorMessage = message)
+        }
+    }
+
+    private fun _clearError() {
+        _setError(null)
     }
 }
