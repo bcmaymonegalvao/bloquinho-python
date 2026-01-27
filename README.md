@@ -106,6 +106,29 @@ cd bloquinho-python
 ## 📋 Next Steps (Phase 4)
 
 - [ ] Integrate Chaquopy for actual Python execution
+- [ ] 
+## 🔄 Phase 4: Advanced Features & Expansion (In Progress)
+
+### Implementation Status
+
+**Chaquopy Integration** ✅ Configured
+- Runtime module setup with Python 3 and numpy
+- NotebookEngine interface with mock execution ready for Chaquopy
+- TODO: Integrate Chaquopy Python interpreter for actual execution
+
+**Notebook Persistence** 🔄 In Progress
+- Room database entities (ProjectEntity, NotebookEntity) implemented
+- CRUD operations framework in place
+- TODO: Add .ipynb serialization/deserialization
+- TODO: Implement import/export functionality
+
+**Planned Features**
+- [ ] Integrate Chaquopy for actual Python execution
+- [ ] Implement notebook persistence (`.ipynb` format)
+- [ ] Add project collaboration features (basic)
+- [ ] Create marketplace for packages
+- [ ] Implement cloud sync (Firebase)
+- [ ] Build documentation website
 - [ ] Implement notebook persistence (`.ipynb` format)
 - [ ] Add project collaboration features
 - [ ] Create marketplace for packages
