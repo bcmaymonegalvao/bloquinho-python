@@ -1,5 +1,7 @@
 # BloquinhoPy - Python Notebook IDE for Android
 
+**Language:** English | [Português 🇧🇷](./README.pt-BR.md)
+
 [![CI](https://github.com/bcmaymonegalvao/bloquinho-python/workflows/CI/badge.svg)](https://github.com/bcmaymonegalvao/bloquinho-python/actions)
 
 BloquinhoPy is an offline-first Python IDE for Android focused on a simple notebook experience (.ipynb). It ships with an embedded Python runtime and a curated scientific stack for mobile.
@@ -129,11 +131,73 @@ cd bloquinho-python
 - [ ] Create marketplace for packages
 - [ ] Implement cloud sync (Firebase)
 - [ ] Build documentation website
-- [ ] Implement notebook persistence (`.ipynb` format)
-- [ ] Add project collaboration features
-- [ ] Create marketplace for packages
-- [ ] Implement cloud sync
-- [ ] Build documentation website
+
+- [ ] ### 🎯 Phase 4 Completion Status
+
+**Core Infrastructure** ✅
+- [x] CI/CD workflow fixed and operational
+- [x] Chaquopy Python runtime configured
+- [x] Database layer complete with entities and DAOs
+- [x] Multi-language support (English/Portuguese)
+
+**Ready for Phase 5 - Production Release**
+
+---
+
+## 📱 Play Store Release Roadmap
+
+### When can you download from Play Store?
+
+**Timeline to Play Store:**
+
+🟢 **Phase 5: Alpha Testing** (Current + 2-3 weeks)
+- Complete Chaquopy integration with actual Python execution
+- Implement .ipynb file import/export
+- Basic error handling and crash reporting
+- Internal testing (Android Studio builds)
+- **Status:** You can build and test on your device NOW using `./gradlew installDebug`
+
+🟡 **Phase 6: Beta Release** (1-2 months)
+- Closed beta testing with Firebase App Distribution
+- Performance optimization
+- UI/UX polish
+- Security audit
+- **Status:** Beta testers can install via Firebase link
+
+🟠 **Phase 7: Production Release** (3-4 months)
+- Play Store listing creation
+- Marketing materials (screenshots, description)
+- Privacy policy and terms of service
+- Final testing on multiple devices
+- Google Play Console approval
+- **Status:** PUBLIC availability on Play Store!
+
+### 🚀 Quick Start (Test Now!)
+
+You can test BloquinhoPy on your smartphone RIGHT NOW:
+
+```bash
+# 1. Clone repository
+git clone https://github.com/bcmaymonegalvao/bloquinho-python.git
+cd bloquinho-python
+
+# 2. Build and install on connected device
+./gradlew installDebug
+
+# 3. Enable USB debugging on your Android phone
+# Settings > Developer Options > USB Debugging
+
+# 4. Connect phone via USB and install!
+```
+
+**Minimum Requirements:**
+- Android 8.0 (API 26) or higher
+- 100MB free storage
+- USB debugging enabled
+
+**Expected Play Store Launch:** Q2 2026 (April-June)
+
+---
 
 ## 📄 License
 
