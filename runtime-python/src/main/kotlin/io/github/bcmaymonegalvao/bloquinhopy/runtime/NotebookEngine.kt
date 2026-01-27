@@ -53,19 +53,19 @@ class PythonNotebookEngine : NotebookEngine {
         val outputs = mutableListOf<NotebookOutput>()
         
         try {
-            // TODO: Integrar com interpretador Python real
+                        // Initialize Python if not started
+            if (!Python.isStarted()) {
+                Python.start(AndroidPlatform(context))
+            }
+            val python = Python.getInstance()
+            val mainModule = python.getModule("__main__")
+            
+            // Execute code and capture result
+            val result = mainModule.callAttr("eval", code)
+            outputs.add(NotebookOutput.Text(result.toString()))
             _outputFlow.emit("Executando célula ${id.index}...
 ")
             
-            // Simulação de lógica de execução
-            if (code.contains("print")) {
-                val content = code.substringAfter("print(").substringBeforeLast(")")
-                outputs.add(NotebookOutput.Text(content.trim('\'', '"')))
-            } else if (code.contains("error")) {
-                throw Exception("Erro simulado na execução Python")
-            } else {
-                outputs.add(NotebookOutput.Text("Código executado com sucesso: $code"))
-            }
             
         } catch (e: Exception) {
             outputs.add(NotebookOutput.Error(
