@@ -1,8 +1,14 @@
-
 # Gradle
 .gradle/
 build/
 **/build/
+
+# Gradle Wrapper (should be committed)
+!gradle/wrapper/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+!gradlew
+!gradlew.bat
 
 # Android Studio
 .idea/
