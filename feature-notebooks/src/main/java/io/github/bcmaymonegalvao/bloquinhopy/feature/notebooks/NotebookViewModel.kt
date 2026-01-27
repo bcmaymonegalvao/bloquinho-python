@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 data class CellState(
     val id: NotebookCellId,
@@ -23,7 +25,8 @@ data class NotebookUiState(
     val isExecuting: Boolean = false
 )
 
-class NotebookViewModel(
+@HiltViewModel
+class NotebookViewModel @Inject constructor(
     private val engine: NotebookEngine
 ) : ViewModel() {
 
@@ -33,52 +36,63 @@ class NotebookViewModel(
     fun updateCellCode(id: NotebookCellId, newCode: String) {
         _uiState.update { state ->
             state.copy(
-                cells = state.cells.map { 
-                    if (it.id == id) it.copy(code = newCode) else it 
+                cells = state.cells.map {
+                    if (it.id == id) it.copy(code = newCode) else it
                 }
             )
         }
     }
 
-    fun executeCell(id: NotebookCellId) {
+    fun addCell() {
+        _uiState.update { state ->
+            val nextIdValue = (state.cells.maxOfOrNull { it.id.value } ?: -1) + 1
+            state.copy(
+                cells = state.cells + CellState(NotebookCellId(nextIdValue))
+            )
+        }
+    }
+
+    fun runCell(id: NotebookCellId) {
         val cell = _uiState.value.cells.find { it.id == id } ?: return
         
         viewModelScope.launch {
-            _uiState.update { state ->
-                state.copy(
-                    cells = state.cells.map { 
-                        if (it.id == id) it.copy(isRunning = true, outputs = emptyList()) else it 
-                    }
-                )
-            }
-
-            val results = engine.runCell(id, cell.code)
-
-            _uiState.update { state ->
-                state.copy(
-                    cells = state.cells.map { 
-                        if (it.id == id) it.copy(isRunning = false, outputs = results) else it 
-                    }
-                )
+            _updateCellRunning(id, true)
+            try {
+                val output = engine.execute(cell.code)
+                _updateCellOutput(id, listOf(output))
+            } catch (e: Exception) {
+                _updateCellOutput(id, listOf(NotebookOutput.Error(e.message ?: "Unknown error")))
+            } finally {
+                _updateCellRunning(id, false)
             }
         }
     }
 
-    fun addCell() {
-        _uiState.update { state ->
-            val nextId = NotebookCellId(state.cells.size)
-            state.copy(cells = state.cells + CellState(nextId))
-        }
-    }
-
-    fun resetEngine() {
+    fun runAll() {
         viewModelScope.launch {
-            engine.reset()
-            _uiState.update { state ->
-                state.copy(
-                    cells = state.cells.map { it.copy(outputs = emptyList()) }
-                )
+            _uiState.value.cells.forEach { cell ->
+                runCell(cell.id)
             }
+        }
+    }
+
+    private fun _updateCellRunning(id: NotebookCellId, isRunning: Boolean) {
+        _uiState.update { state ->
+            state.copy(
+                cells = state.cells.map {
+                    if (it.id == id) it.copy(isRunning = isRunning) else it
+                }
+            )
+        }
+    }
+
+    private fun _updateCellOutput(id: NotebookCellId, outputs: List<NotebookOutput>) {
+        _uiState.update { state ->
+            state.copy(
+                cells = state.cells.map {
+                    if (it.id == id) it.copy(outputs = outputs) else it
+                }
+            )
         }
     }
 }
