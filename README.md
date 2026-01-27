@@ -18,7 +18,32 @@ BloquinhoPy is an offline-first Python IDE for Android focused on a simple noteb
 - ✅ **Phase 4**: Cell Output UI (Display execution results, formatted outputs)
 - 🚧 **Phase 5**: Alpha Testing (Python execution, .ipynb serialization, notebook persistence)
 ```
-app/src/main/java/io/github/bcmaymonegalvao/bloquinhopy/
+app/src/main/java/io/github/[[[[[[[[[[[[[[[[[[[[[[[[[[[[[
+```
+📱 app/src/main/java/io/github/bcmaymonegalvao/bloquinhopy/
+├── 💉 di/                    # Dependency Injection (Hilt Modules)
+│   ├── DatabaseModule.kt    # Room Database configuration
+│   └── EngineModule.kt      # PythonEngine singleton
+├── 📊 data/                 # Data Layer
+│   ├── 💾 local/
+│   │   ├── database/        # Room Database
+│   │   ├── dao/             # Data Access Objects
+│   │   └── entities/        # Entity definitions
+│   ├── 📦 repository/       # Repository pattern
+│   └── 📄 model/            # Data models
+├── 🐍 engine/               # Python Execution Engine
+│   └── PythonEngine.kt      # Chaquopy integration
+├── 🎨 ui/                   # UI Layer (Jetpack Compose)
+│   ├── 🧭 navigation/       # Navigation graph
+│   ├── 📁 project/          # Project list screen
+│   ├── 📓 notebook/         # Notebook editor screen
+│   ├── 🎭 theme/            # Material3 theming
+│   └── 🧩 components/       # Reusable components
+├── 🛠️ util/                 # Utilities
+│   └── Logger.kt            # Logging & Custom Exceptions
+├── 🚀 BloquinhoApplication.kt # App initialization with Hilt
+└── 🏠 MainActivity.kt        # Entry point
+```](url)](url)](url)](url)][[[[[[[[[[[[[[[[[[[[](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)(url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)](url)bcmaymonegalvao/bloquinhopy/
 ├── di/                      # Dependency Injection (Hilt Modules)
 │   ├── DatabaseModule.kt    # Room Database configuration
 │   └── EngineModule.kt      # PythonEngine singleton
@@ -107,34 +132,50 @@ cd bloquinho-python
 ./gradlew test
 ```
 
-## 📋 Next Steps (Phase 4)
+[](url)## 📋 Next Steps (Phase 4)
 
-- [ ] Integrate Chaquopy for actual Python execution
+[[](url)](url)- [ ] Integrate Chaquopy for actual Python execution
 - [ ] 
 ## 🔄 Phase 4: Advanced Features & Expansion (In Progress)
 
 ### Implementation Status
 
-**Chaquopy Integration** ✅ Configured
-- Runtime module setup with Python 3 and numpy
-- NotebookEngine interface with mock execution ready for Chaquopy
-- TODO: Integrate Chaquopy Python interpreter for actual execution
+**Chaquopy Integration** ✅ **Complete**- Runtime module setup with Python 3 and numpy
+- [[- ✅ Python runtime with Chaquopy integrated
+- ✅ Real Python code execution in NotebookEngine
+- ✅ Error handling and output capture](url)](url)NotebookEngine interface with mock execution ready for Chaquopy
+- [](url)TODO: Integrate Chaquopy Python interpreter for actual execution
 
-**Notebook Persistence** 🔄 In Progress
-- Room database entities (ProjectEntity, NotebookEntity) implemented
-- CRUD operations framework in place
-- TODO: Add .ipynb serialization/deserialization
+**Notebook Persistence** ✅ **Complete**- Room database entities (ProjectEntity, NotebookEntity) implemented
+- [[[[- ✅ Room database entities (ProjectEntity, NotebookEntity) implemented
+- ✅ .ipynb serialization/deserialization with NotebookSerializer
+- ✅ Save/Load functions in NotebookViewModel
+- 🚧 Import/export UI pending](url)](url)](url)](url)CRUD operations framework in place
+- [[](url)](url)TODO: Add .ipynb serialization/deserialization
 - TODO: Implement import/export functionality
 
 **Planned Features**
-- [ ] Integrate Chaquopy for actual Python execution
-- [ ] Implement notebook persistence (`.ipynb` format)
-- [ ] Add project collaboration features (basic)
-- [ ] Create marketplace for packages
+- [ [- [x] ✅ Chaquopy for actual Python execution](url)] Integrate Chaquopy for actual Python execution
+- [ [- [x] ✅ .ipynb serialization/deserialization](url)] Implement notebook persistence (`.ipynb` format)
+- [- [ ] 🚧 Add UI for file import/export
+- [ ] 🚧 File picker integration](url)[ ] Add project collaboration features (basic)
+- [[[[](url)](url)](url)](url)[ ] Create marketplace for packages
 - [ ] Implement cloud sync (Firebase)
 - [ ] Build documentation website
+[[
+### 🎯 Phase 5 Status
 
-- [ ] ### 🎯 Phase 4 Completion Status
+**✅ Complete:**
+- [x] Chaquopy Python execution fully integrated
+- [x] .ipynb serialization/deserialization
+- [x] Notebook save/load functions
+- [x] Error handling for Python code
+
+**🚧 Next Steps (Phase 6):**
+- [ ] File import/export UI
+- [ ] Performance optimization
+- [ ] Extended Python library support](url)](url)
+- [](url)[ ] ### 🎯 Phase 4 Completion Status
 
 **Core Infrastructure** ✅
 - [x] CI/CD workflow fixed and operational
