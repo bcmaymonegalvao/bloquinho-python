@@ -2,6 +2,17 @@
 
 **Language:** English | [Português 🇧🇷](./README.pt-BR.md)
 
+---
+
+## 📥 Download
+
+[![Download Latest Release](https://img.shields.io/badge/Download-APK%20v1.0.0-green?style=for-the-badge&logo=android)](https://github.com/bcmaymonegalvao/bloquinho-python/releases/latest/download/app-release.apk)
+[![View All Releases](https://img.shields.io/badge/View-All%20Releases-blue?style=for-the-badge&logo=github)](https://github.com/bcmaymonegalvao/bloquinho-python/releases)
+
+**Última versão:** [v1.0.0](https://github.com/bcmaymonegalvao/bloquinho-python/releases/tag/v1.0.0) | **Android 8.0+** | **~50MB**
+
+
+
 [![CI](https://github.com/bcmaymonegalvao/bloquinho-python/workflows/CI/badge.svg)](https://github.com/bcmaymonegalvao/bloquinho-python/actions)
 
 BloquinhoPy is an **offline-first** Python IDE for Android focused on a simple notebook experience (`.ipynb`). It ships with an embedded Python runtime and a curated scientific stack for mobile devices.
