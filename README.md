@@ -195,11 +195,9 @@ cd bloquinho-python
 - 100MB free storage
 - USB debugging enabled
 
-**Expected Play Store Launch:** Q2 2026 (April-June)
 
 ---
 
-## 📄 License
 
 MIT - See LICENSE file for details
 
