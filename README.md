@@ -17,7 +17,6 @@ BloquinhoPy is an offline-first Python IDE for Android focused on a simple noteb
 ### Project Structure
 - ✅ **Phase 4**: Cell Output UI (Display execution results, formatted outputs)
 - 🚧 **Phase 5**: Alpha Testing (Python execution, .ipynb serialization, notebook persistence)
-```
 
 ```
 ├── 💉 di/                    # Dependency Injection (Hilt Modules)
