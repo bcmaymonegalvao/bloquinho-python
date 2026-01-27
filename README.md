@@ -50,7 +50,7 @@ flowchart TB
   class Pack py;
 
 ```
-### Files
+### Application architecture (layered package structure)
 
 ```text
 ├── 💉 di/                     # Dependency injection modules (Hilt)
