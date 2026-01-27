@@ -1,118 +1,227 @@
-# BloquinhoPy - Python Notebook IDE for Android
+# BloquinhoPy — Python Notebook IDE for Android
 
 **Language:** English | [Português 🇧🇷](./README.pt-BR.md)
 
 [![CI](https://github.com/bcmaymonegalvao/bloquinho-python/workflows/CI/badge.svg)](https://github.com/bcmaymonegalvao/bloquinho-python/actions)
 
-BloquinhoPy is an offline-first Python IDE for Android focused on a simple notebook experience (.ipynb). It ships with an embedded Python runtime and a curated scientific stack for mobile.
+BloquinhoPy is an **offline-first** Python IDE for Android focused on a simple notebook experience (`.ipynb`). It ships with an embedded Python runtime and a curated scientific stack for mobile devices.
 
-## 🎯 MVP Goals
+## 🎯 MVP goals
 
-- ✅ **Phase 1**: Core Engine (Hilt DI, Room Database, PythonEngine)
-- ✅ **Phase 2**: UI Integration (Jetpack Compose, Navigation, ViewModels)
-- ✅ **Phase 3**: Advanced Features (Python Execution, Error Handling, Theming, Logging)
+- ✅ **Phase&nbsp;1 – Core engine:** Hilt DI, Room database, PythonEngine.
+- ✅ **Phase&nbsp;2 – UI integration:** Jetpack Compose, Navigation, ViewModels.
+- ✅ **Phase&nbsp;3 – Advanced features:** Python execution, error handling, theming and logging.
 
 ## 🏗️ Architecture
 
-### Project Structure
-- ✅ **Phase 4**: Cell Output UI (Display execution results, formatted outputs)
-- 🚧 **Phase 5**: Alpha Testing (Python execution, .ipynb serialization, notebook persistence)
+### Project structure
+
+```mermaid
+flowchart TB
+  %% ========= NODES =========
+  UI["📱 App (Compose UI)"]
+  Features["🧩 Feature Modules\n(projects • notebooks • github)"]
+  DI["💉 DI (Hilt)"]
+  Data["🗄️ Data Layer\n(Repository + Room)"]
+  Engine["🐍 PythonEngine"]
+  Runtime["⚙️ Python Runtime\n(Chaquopy)"]
+  Pack["📦 Python Pack\n(assets/offline libs)"]
+
+  %% ========= FLOW =========
+  UI --> Features --> DI
+  DI --> Data
+  DI --> Engine
+  Engine --> Runtime --> Pack
+
+  %% ========= STYLES =========
+  classDef ui fill:#E8F1FF,stroke:#2563EB,color:#0F172A,stroke-width:1px;
+  classDef feature fill:#F1F5F9,stroke:#334155,color:#0F172A,stroke-width:1px;
+  classDef di fill:#ECFDF5,stroke:#16A34A,color:#064E3B,stroke-width:1px;
+  classDef data fill:#E6FFFB,stroke:#0F766E,color:#042F2E,stroke-width:1px;
+  classDef py fill:#FFF7ED,stroke:#F59E0B,color:#7C2D12,stroke-width:1px;
+  classDef runtime fill:#FEF2F2,stroke:#EF4444,color:#7F1D1D,stroke-width:1px;
+
+  class UI ui;
+  class Features feature;
+  class DI di;
+  class Data data;
+  class Engine py;
+  class Runtime runtime;
+  class Pack py;
 
 ```
-├── 💉 di/                    # Dependency Injection (Hilt Modules)
-│   ├── DatabaseModule.kt    # Room Database configuration
-│   └── EngineModule.kt      # PythonEngine singleton
-├── 📊 data/                 # Data Layer
-│   ├── 💾 local/
-│   │   ├── database/        # Room Database
-│   │   ├── dao/             # Data Access Objects
-│   │   └── entities/        # Entity definitions
-│   ├── 📦 repository/       # Repository pattern
-│   └── 📄 model/            # Data models
-├── 🐍 engine/               # Python Execution Engine
-│   └── PythonEngine.kt      # Chaquopy integration
-├── 🎨 ui/                   # UI Layer (Jetpack Compose)
-│   ├── 🧭 navigation/       # Navigation graph
-│   ├── 📁 project/          # Project list screen
-│   ├── 📓 notebook/         # Notebook editor screen
-│   ├── 🎭 theme/            # Material3 theming
-│   └── 🧩 components/       # Reusable components
-├── 🛠️ util/                 # Utilities
-│   └── Logger.kt            # Logging & Custom Exceptions
-├── 🚀 BloquinhoApplication.kt # App initialization with Hilt
-└── 🏠 MainActivity.kt        # Entry point
-├── di/                      # Dependency Injection (Hilt Modules)
-│   ├── DatabaseModule.kt    # Room Database configuration
-│   └── EngineModule.kt      # PythonEngine singleton
-├── data/                    # Data Layer
-│ [[[[  ├[[[[[[[[[[[[[[[[[[[[[[[[[[[── local/
-│   │   ├── database/        # Room Database
-│   │   ├── dao/             # Data Access Objects
-│   │   └── entities/        # Entity definitions
-│   ├── repository/          # Repository pattern
-│   └── model/               # Data models
-├── engine/                  # Python Execution Engine
-│   └── PythonEngine.kt      # Chaquopy integration (mock for now)
-├── ui/                      # UI Layer (Jetpack Compose)
-│   ├── navigation/          # Navigation graph
-│   ├── project/             # Project list screen
-│   ├── notebook/            # Notebook editor screen
-│   ├── theme/               # Material3 theming
-│   └── components/          # Reusable components
-├── util/                    # Utilities
-│   └── Logger.kt            # Logging & Custom Exceptions
-├── BloquinhoApplication.kt  # App initialization with Hilt
-└── MainActivity.kt          # Entry point
+### Files
+
+```text
+├── 💉 di/                     # Dependency injection modules (Hilt)
+│   ├── DatabaseModule.kt     # Room database configuration
+│   └── EngineModule.kt       # PythonEngine singleton provider
+├── 📊 data/                   # Data layer
+│   ├── 💾 local/              # Local sources (Room)
+│   │   ├── database/         # Room database setup
+│   │   ├── dao/              # Data Access Objects
+│   │   └── entities/         # Room entities
+│   ├── 📦 repository/         # Repository pattern
+│   └── 📄 model/              # Data models / DTOs
+├── 🐍 engine/                 # Python execution engine
+│   └── PythonEngine.kt       # Chaquopy integration
+├── 🎨 ui/                     # UI layer (Jetpack Compose)
+│   ├── 🧭 navigation/         # Navigation graph/routes
+│   ├── 📁 project/            # Project list & management screens
+│   ├── 📓 notebook/           # Notebook editor/execution screens
+│   ├── 🎭 theme/              # Material&nbsp;3 theme
+│   └── 🧩 components/         # Reusable UI components
+├── 🛠️ util/                   # Utilities & helpers
+│   └── Logger.kt             # Logging & custom exceptions
+├── 🚀 BloquinhoApplication.kt  # Application class (Hilt setup)
+└── 🏠 MainActivity.kt         # App entry point
+```
+
+This high-level overview reflects the Kotlin module layout used in the `app/src/main/java` namespace. Additional Gradle modules such as `core/`, `runtime-python/`, `feature-github/`, `feature-notebooks/` and `feature-projects/` live alongside `app/` and follow a similar internal structure. See the [project tree](docs/ARCHITECTURE.md) for details.
+
+## Repository structure
+
+The root of this repository contains multiple Gradle modules and supporting files. The following tree (generated using find) shows the top‑level layout of the project. Directories and important files are annotated with emojis to hint at their purpose:
+
+```
+📦 bloquinhopy-android-scaffold/
+├── ⚙️ .editorconfig
+├── 🙈 .gitignore
+├── 🐙 .github/
+│   ├── 🧩 ISSUE_TEMPLATE/
+│   │   ├── 🐛 bug_report.md
+│   │   └── ✨ feature_request.md
+│   └── 🤖 workflows/
+│       └── ✅ ci.yml
+│
+├── 📱 app/
+│   ├── 🧱 build.gradle.kts
+│   └── 📁 src/main/
+│       ├── 🤖 AndroidManifest.xml
+│       ├── ☕ java/
+│       │   └── 📦 io/github/bcmaymonegalvao/
+│       │       └── 📄 BloquinhoApplication.kt
+│       └── 🎨 res/
+│           └── 🏷️ values/
+│               ├── 📝 strings.xml
+│               └── 🎨 themes.xml
+│
+├── 🧩 core/
+│   ├── 🧱 build.gradle.kts
+│   └── ☕ src/main/java/                  # (sem arquivos encontrados no maxdepth atual)
+│
+├── 🧩 feature-github/
+│   ├── 🧱 build.gradle.kts
+│   └── ☕ src/main/java/
+│       └── 📦 io/github/...
+│
+├── 🧩 feature-notebooks/
+│   ├── 🧱 build.gradle.kts
+│   └── ☕ src/main/java/
+│       └── 📦 io/github/...
+│
+├── 🧩 feature-projects/
+│   ├── 🧱 build.gradle.kts
+│   └── ☕ src/main/java/
+│       └── 📦 io/github/...
+│
+├── 🐍 python-pack/
+│   ├── 🧱 build.gradle.kts
+│   └── 🗃️ src/main/assets/
+│       └── 🧷 .keep
+│
+├── 🐍⚙️ runtime-python/
+│   ├── 🧱 build.gradle.kts
+│   └── 📁 src/main/                       # (sem arquivos encontrados no maxdepth atual)
+│
+├── 📚 docs/
+│   ├── 🧭 ARCHITECTURE.md
+│   ├── 📌 PRD.md
+│   ├── 🗺️ ROADMAP.md
+│   ├── 🧠 adr/
+│   │   ├── ADR-0001-python-runtime-chaquopy.md
+│   │   ├── ADR-0002-notebook-engine-no-jupyter-server.md
+│   │   ├── ADR-0003-abi-arm64-only.md
+│   │   ├── ADR-0004-distribution-play-asset-delivery.md
+│   │   ├── ADR-0005-packages-install-policy.md
+│   │   └── ADR-0006-streamlit-local-webview.md
+│   └── 🧪 examples/
+│       └── hello_notebook.ipynb
+│
+├── 🧱 gradle/
+│   ├── 🧾 libs.versions.toml
+│   └── 🧰 wrapper/
+│       └── gradle-wrapper.properties
+│
+├── 🛠️ scripts/
+│   └── 🚀 init_repo.sh
+│
+├── 🧱 build.gradle.kts
+├── 🧱 settings.gradle.kts
+├── 🧰 gradlew
+├── 🧰 gradlew.bat
+│
+├── 📝 CHANGELOG.md
+├── 🤝 CONTRIBUTING.md
+├── 🫶 CODE_OF_CONDUCT.md
+├── 🔐 SECURITY.md
+├── 📄 LICENSE
+├── 📘 README.md
+└── 📗 README.pt-BR.md
 ```
 
 ## 🔧 Technologies
 
-- **Language**: Kotlin
-- **UI Framework**: Jetpack Compose
-- **Database**: Room
-- **Dependency Injection**: Hilt
-- **Navigation**: Compose Navigation
-- **Async**: Coroutines & Flow
-- **Python Runtime**: Chaquopy (for actual Python execution)
-- **Build Tool**: Gradle 8.7
-- **CI/CD**: GitHub Actions
+- **Language:** Kotlin
+- **UI framework:** Jetpack Compose
+- **Database:** Room
+- **Dependency injection:** Hilt
+- **Navigation:** Compose Navigation
+- **Async:** Coroutines & Flow
+- **Python runtime:** Chaquopy (for embedded Python execution)
+- **Build tool:** Gradle 8.7
+- **CI/CD:** GitHub Actions
 
-## 📦 Key Components
+## 📦 Key components
 
-### 1. **PythonEngine** (`engine/PythonEngine.kt`)
-- Handles Python code execution
-- Currently has mock evaluation; ready for Chaquopy integration
-- Returns `ExecutionResult` with output, errors, and execution time
+1. **PythonEngine** (`engine/PythonEngine.kt`)
+   
+   Handles Python code execution. The current implementation uses a mock evaluator and is ready for Chaquopy integration. Each run returns an `ExecutionResult` containing the standard output, any error messages and execution time.
 
-### 2. **Logger & Error Handling** (`util/Logger.kt`)
-- Unified logging system with different log levels
-- Custom exception types for better error handling
-- Exception categories: Database, Execution, Validation, NotFound
+2. **Logger & error handling** (`util/Logger.kt`)
 
-### 3. **Material3 Theme** (`ui/theme/`)
-- Comprehensive color scheme (light & dark modes)
-- Custom typography for all text styles
-- Brand colors using teal palette
+   Provides a unified logging system with different log levels and custom exception types to improve error handling. Exceptions are categorised into database, execution, validation and not-found errors.
 
-### 4. **Data Layer** (`data/`)
-- **Entities**: `ProjectEntity`, `NotebookEntity` with relationships
-- **DAOs**: `ProjectDao`, `NotebookDao` for CRUD operations
-- **Repository**: `BloquinhoRepository` for unified data access
-- **Database**: `AppDatabase` Room implementation
+3. **Material 3 theme** (`ui/theme/`)
 
-### 5. **UI Screens**
-- **ProjectListScreen**: Display and create projects
-- **NotebookScreen**: Edit notebooks with Python code execution
-- **Navigation**: Jetpack Compose navigation with arguments
+   Defines the app’s light and dark colour schemes and custom typography. Brand colours are based on a teal palette.
 
-## 🚀 Getting Started
+4. **Data layer** (`data/`)
+
+   - **Entities:** `ProjectEntity`, `NotebookEntity` with relationships.
+   - **DAOs:** `ProjectDao`, `NotebookDao` for CRUD operations.
+   - **Repository:** `BloquinhoRepository` providing a unified API for accessing local data.
+   - **Database:** `AppDatabase` Room implementation.
+
+5. **UI screens**
+
+   - **ProjectListScreen:** Display and create projects.
+   - **NotebookScreen:** Edit notebooks and run Python code.
+   - **Navigation:** Built with Jetpack Compose navigation and typed arguments.
+
+## 🚀 Getting started
 
 ### Prerequisites
+
+Ensure you have the following installed:
+
 - Android SDK 34+
 - JDK 17+
 - Gradle 8.7+
 
-### Build & Run
+### Build & run
+
+Run the following commands from a terminal to build, install and test BloquinhoPy:
 
 ```bash
 # Clone repository
@@ -129,202 +238,65 @@ cd bloquinho-python
 ./gradlew test
 ```
 
-[## 📋 Next Steps (Phase 4)
+## 📋 Roadmap & status
 
-[[- [ ] Integrate Chaquopy for actual Python execution
-- [ ] 
-## 🔄 Phase 4: Advanced Features & Expansion (In Progress)
+### Completed
 
-### Implementation Status
+- ✅ Chaquopy Python execution integrated
+- ✅ `.ipynb` serialization/deserialization with `NotebookSerializer`
+- ✅ Notebook save/load via `NotebookViewModel`
+- ✅ Error handling for Python code
+- ✅ CI/CD workflow operational
+- ✅ Database layer complete with entities and DAOs
+- ✅ Multi-language support (English/Portuguese)
 
-**Chaquopy Integration** ✅ **Complete**- Runtime module setup with Python 3 and numpy
-- ✅ Python runtime with Chaquopy integrated
-- ✅ Real Python code execution in NotebookEngine
-- ✅ Error handling and output captureNotebookEngine interface with mock execution ready for Chaquopy
-- [TODO: Integrate Chaquopy Python interpreter for actual execution
+### In progress
 
-**Notebook Persistence** ✅ **Complete**- Room database entities (ProjectEntity, NotebookEntity) implemented
-- ✅ Room database entities (ProjectEntity, NotebookEntity) implemented
-- ✅ .ipynb serialization/deserialization with NotebookSerializer
-- ✅ Save/Load functions in NotebookViewModel
-- 🚧 Import/export UI pending CRUD operations framework in place
-- TODO: Add .ipynb serialization/deserialization
-- TODO: Implement import/export functionality
+- 🚧 File import/export UI
+- 🚧 Performance optimisation
+- 🚧 Extended Python library support
+- 🚧 Project collaboration features (basic)
+- 🚧 Package marketplace
+- 🚧 Cloud sync (Firebase)
+- 🚧 Documentation website
 
-**Planned Features**
-- ✅ Chaquopy for actual Python execution] Integrate Chaquopy for actual Python execution
-- ✅ .ipynb serialization/deserialization] Implement notebook persistence (`.ipynb` format)
-- 🚧 Add UI for file import/export
-- 🚧 File picker integration[ ] Add project collaboration features (basic)
-- [ ] Create marketplace for packages
-- [ ] Implement cloud sync (Firebase)
-- [ ] Build documentation website
+For a detailed timeline of future releases (alpha, beta and production) see [docs/ROADMAP.md](docs/ROADMAP.md).
 
-### 🎯 Phase 5 Status
+## 📱 Play Store release roadmap
 
-**✅ Complete:**
-- [x] Chaquopy Python execution fully integrated
-- [x] .ipynb serialization/deserialization
-- [x] Notebook save/load functions
-- [x] Error handling for Python code
+**Phase 5: Alpha testing** (in progress) – Chaquopy integration and notebook persistence are complete. Internal testing is available; you can build and test the app now.
 
-**🚧 Next Steps (Phase 6):**
-- [ ] File import/export UI
-- [ ] Performance optimization
-- [ ] Extended Python library support
+**Phase 6: Beta release** (planned) – Focus on performance optimisation, UI/UX polish and security. Distribution via Firebase App Distribution.
 
-**Core Infrastructure** ✅
-- [x] CI/CD workflow fixed and operational
-- [x] Chaquopy Python runtime configured
-- [x] Database layer complete with entities and DAOs
-- [x] Multi-language support (English/Portuguese)
+**Phase 7: Production release** (planned) – Create Play Store listing, marketing materials, privacy policy and complete final testing for approval.
 
-**Ready for Phase 5 - Production Release**
+## 🧪 Alpha testing
 
-## 📱 Play Store Release Roadmap
+You can test BloquinhoPy on your smartphone by building from source:
 
-### When can you download from Play Store?
+1. Clone the repository and open it in Android Studio (Hedgehog or later).
+2. Sync Gradle and build the project.
+3. Run on your device or emulator.
+4. Create new cells and execute Python code (e.g. `print("Hello")`, `2 + 2`).
+5. Check that outputs appear correctly and verify that invalid code triggers appropriate error messages.
 
-**Timeline to Play Store:**
+### Known limitations
 
-🟢 **Phase 5: Alpha Testing** (Current + 2-3 weeks)
-- Complete Chaquopy integration with actual Python execution
-- Implement .ipynb file import/export
-- Basic error handling and crash reporting
-- Internal testing (Android Studio builds)
-- **Status:** You can build and test on your device NOW using `./gradlew installDebug`
-
-🟡 **Phase 6: Beta Release** (1-2 months)
-- Closed beta testing with Firebase App Distribution
-- Performance optimization
-- UI/UX polish
-- Security audit
-- **Status:** Beta testers can install via Firebase link
-
-🟠 **Phase 7: Production Release** (3-4 months)
-- Play Store listing creation
-- Marketing materials (screenshots, description)
-- Privacy policy and terms of service
-- Final testing on multiple devices
-- Google Play Console approval
-- **Status:** PUBLIC availability on Play Store!
-
-### 🚀 Quick Start (Test Now!)
-
-You can test BloquinhoPy on your smartphone RIGHT NOW:
-
-```bash
-# 1. Clone repository
-git clone https://github.com/bcmaymonegalvao/bloquinho-python.git
-cd bloquinho-python
-
-# 2. Build and install on connected device
-./gradlew installDebug
-
-# 3. Enable USB debugging on your Android phone
-# Settings > Developer Options > USB Debugging
-
-# 4. Connect phone via USB and install!
-```
-
-**Minimum Requirements:**
-- Android 8.0 (API 26) or higher
-- 100MB free storage
-- USB debugging enabled
-
-
-## 🧪 Alpha Testing
-
-### Building from Source
-
-1. Clone the repository:
-```bash
-git clone https://github.com/bcmaymonegalvao/bloquinho-python.git
-cd bloquinho-python
-```
-
-2. Open in Android Studio (Hedgehog or later)
-
-3. Sync Gradle and build the project
-
-4. Run on your device or emulator
-
-### Testing Python Execution
-
-- Create new cells and execute Python code
-- Test basic Python expressions: `print("Hello")`, `2 + 2`, etc.
-- Check output display in cell results
-- Verify error handling for invalid code
-
-### Known Limitations
-
-- 🚧 .ipynb file save/load UI not yet implemented (functions available in ViewModel)
-- 🚧 Limited Python standard library (Chaquopy constraints)
-- 🚧 No external package installation yet
+- 🚧 `.ipynb` file save/load UI not yet implemented (low-level functions exist in the ViewModel).
+- 🚧 Limited Python standard library (Chaquopy constraints).
+- 🚧 External package installation is not yet supported.
 
 ---
 
-
-MIT - See LICENSE file for details
+MIT – see the [LICENSE](LICENSE) file for details.
 
 ## 👨‍💻 Author
 
-**Bruno César Maymone Galvão** - Senior Developer & ML Engineer
+**Bruno César Maymone Galvão** – Senior Developer & ML Engineer
+
 - GitHub: [@bcmaymonegalvao](https://github.com/bcmaymonegalvao)
-- Focus: Python, Machine Learning, Full-Stack Development
+- Focus: Python, machine learning and full-stack development.
 
 ---
 
-**BloquinhoPy** - Making Python development accessible on Android 📱✨
-
-
-## 🚀 Play Store Deployment (Passo 1 - IN PROGRESS)
-
-Veja a documentação completa em [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md)
-
-### Passo 1: Build Configuration ✅ COMPLETO
-
-- ✅ **build.gradle.kts** - Versionamento e configuração de assinatura
-  - compileSdk/targetSdk: API 35
-  - versionCode: 1 | versionName: "1.0.0"
-  - Signing configs com variáveis de ambiente
-  - R8 minification e resource shrinking ativados
-  
-- ✅ **proguard-rules.pro** - Otimizações de código
-  - Mantém classes essenciais (Compose, Hilt, Python runtime)
-  - Remove logging em builds de release
-  - ~5-10% redução de tamanho APK
-
-- ✅ **RELEASE_SETUP.md** - Guia completo de setup
-  - Geração de keystore (keytool)
-  - Configuração de variáveis de ambiente (Windows/macOS/Linux)
-  - Compilação de APK/Bundle
-  - Troubleshooting
-
-### Próximos Passos
-
-**Seu turno (Passo 2):**
-1. Crie conta no [Google Play Console](https://play.google.com/console)
-2. Comece novo app listing
-3. Preencha informações básicas (nome, descrição, categoria)
-4. Confira requisitos de conformidade
-
-Depois disso, continuaremos com:
-- **Passo 3**: Preparar assets (ícone 512x512, screenshots)
-- **Passo 4**: Beta testing
-- **Passo 5**: Launch na Play Store
-
-**Build Commands:**
-```bash
-# Setup keystore (primeira vez)
-keytool -genkey -v -keystore bloquinhopy-release.jks -keyalg RSA -keysize 2048 -validity 10000 -alias bloquinhopy-key
-
-# Compilar release bundle
-export KEYSTORE_PATH="./bloquinhopy-release.jks"
-export KEYSTORE_PASSWORD="sua-senha"
-export KEY_ALIAS="bloquinhopy-key"
-export KEY_PASSWORD="sua-senha"
-./gradlew bundleRelease
-```
-
-Ver: [docs/RELEASE_SETUP.md](./docs/RELEASE_SETUP.md) para instruções detalhadas.
+BloquinhoPy — making Python development accessible on Android 📱✨
