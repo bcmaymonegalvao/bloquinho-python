@@ -1,4 +1,3 @@
-
 name: CI
 
 on:
@@ -9,8 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
       - uses: actions/checkout@v4
 
@@ -20,13 +17,10 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - name: Validate Gradle wrapper
-        run: |
-          if [ ! -f "./gradlew" ]; then
-            echo "Gradle wrapper not found. Generate it locally and commit gradlew + gradle/wrapper/*"
-            exit 1
-          fi
-          chmod +x ./gradlew
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3
+        with:
+          gradle-version: "8.7"
 
       - name: Build (Debug)
         run: ./gradlew :app:assembleDebug
