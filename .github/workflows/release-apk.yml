@@ -1,0 +1,77 @@
+name: Build and Release APK
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+      
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      
+      - name: Build release APK
+        run: ./gradlew assembleRelease
+        env:
+          KEYSTORE_PATH: ${{ github.workspace }}/keystore.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      
+      - name: Create keystore (if secrets provided)
+        if: secrets.KEYSTORE_B64 != ''
+        run: |
+          echo "${{ secrets.KEYSTORE_B64 }}" | base64 -d > keystore.jks
+      
+      - name: Upload APK to Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            app/build/outputs/apk/release/app-release.apk
+            app/build/outputs/bundle/release/app-release.aab
+          body: |
+            # BloquinhoPy v${{ github.ref_name }}
+            
+            ## Installation Instructions
+            
+            ### For APK (Direct Installation)
+            1. Download `app-release.apk`
+            2. Transfer to your Android device
+            3. Enable "Install from Unknown Sources" in Settings > Security
+            4. Tap the APK file to install
+            
+            ### System Requirements
+            - Android 8.0 (API 26) or higher
+            - 100MB free storage
+            - USB Debugging (optional, for adb install)
+            
+            ### Via ADB (Advanced)
+            ```bash
+            adb install app-release.apk
+            ```
+            
+            ## Release Notes
+            See the full changelog: [CHANGELOG.md](https://github.com/bcmaymonegalvao/bloquinho-python/blob/main/CHANGELOG.md)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Upload APK as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: bloquinhopy-apk
+          path: |
+            app/build/outputs/apk/release/app-release.apk
+            app/build/outputs/bundle/release/app-release.aab
+          retention-days: 90
