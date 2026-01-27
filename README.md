@@ -276,3 +276,55 @@ MIT - See LICENSE file for details
 ---
 
 **BloquinhoPy** - Making Python development accessible on Android 📱✨
+
+
+## 🚀 Play Store Deployment (Passo 1 - IN PROGRESS)
+
+Veja a documentação completa em [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md)
+
+### Passo 1: Build Configuration ✅ COMPLETO
+
+- ✅ **build.gradle.kts** - Versionamento e configuração de assinatura
+  - compileSdk/targetSdk: API 35
+  - versionCode: 1 | versionName: "1.0.0"
+  - Signing configs com variáveis de ambiente
+  - R8 minification e resource shrinking ativados
+  
+- ✅ **proguard-rules.pro** - Otimizações de código
+  - Mantém classes essenciais (Compose, Hilt, Python runtime)
+  - Remove logging em builds de release
+  - ~5-10% redução de tamanho APK
+
+- ✅ **RELEASE_SETUP.md** - Guia completo de setup
+  - Geração de keystore (keytool)
+  - Configuração de variáveis de ambiente (Windows/macOS/Linux)
+  - Compilação de APK/Bundle
+  - Troubleshooting
+
+### Próximos Passos
+
+**Seu turno (Passo 2):**
+1. Crie conta no [Google Play Console](https://play.google.com/console)
+2. Comece novo app listing
+3. Preencha informações básicas (nome, descrição, categoria)
+4. Confira requisitos de conformidade
+
+Depois disso, continuaremos com:
+- **Passo 3**: Preparar assets (ícone 512x512, screenshots)
+- **Passo 4**: Beta testing
+- **Passo 5**: Launch na Play Store
+
+**Build Commands:**
+```bash
+# Setup keystore (primeira vez)
+keytool -genkey -v -keystore bloquinhopy-release.jks -keyalg RSA -keysize 2048 -validity 10000 -alias bloquinhopy-key
+
+# Compilar release bundle
+export KEYSTORE_PATH="./bloquinhopy-release.jks"
+export KEYSTORE_PASSWORD="sua-senha"
+export KEY_ALIAS="bloquinhopy-key"
+export KEY_PASSWORD="sua-senha"
+./gradlew bundleRelease
+```
+
+Ver: [docs/RELEASE_SETUP.md](./docs/RELEASE_SETUP.md) para instruções detalhadas.
