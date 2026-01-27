@@ -1,7 +1,7 @@
-
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.hilt)
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -11,18 +11,14 @@ android {
     defaultConfig {
         minSdk = 26
     }
-
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-
-    val composeBom = platform(libs.androidx.compose.bom)
-    implementation(composeBom)
-
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.material3)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
+    
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 }
