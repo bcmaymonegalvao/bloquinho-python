@@ -15,7 +15,6 @@
 
 [![CI](https://github.com/bcmaymonegalvao/bloquinho-python/workflows/CI/badge.svg)](https://github.com/bcmaymonegalvao/bloquinho-python/actions)
 
-BloquinhoPy is an **offline-first** Python IDE for Android focused on a simple notebook experience (`.ipynb`). It ships with an embedded Python runtime and a curated scientific stack for mobile devices.
 
 ## 🎯 MVP goals
 
