@@ -64,11 +64,10 @@ cd bloquinho-python
 - 100MB de armazenamento livre
 - Depuração USB ativada
 
-**Lançamento Previsto na Play Store:** Q2 2026 (Abril-Junho)
 
 ---
 
-## 🎯 Estado de Conclusão da Fase 4
+[](url)## 🎯 Estado de Conclusão da Fase 4
 
 **Infraestrutura Central** ✅
 - [x] Workflow CI/CD corrigido e operacional
