@@ -34,7 +34,7 @@ if: ${{ secrets.KEYSTORE_B64 != '' }}        run: |
           echo "${{ secrets.KEYSTORE_B64 }}" | base64 -d > keystore.jks
       
       - name: Upload APK to Release
-        if: startsWith(github.ref, 'refs/tags/')
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
         uses: softprops/action-gh-release@v1
         with:
           files: |
