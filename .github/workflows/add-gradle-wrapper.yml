@@ -1,10 +1,10 @@
 name: Add Gradle Wrapper
 
 on:
+  workflow_dispatch:
 
 permissions:
   contents: write
-  workflow_dispatch:
 
 jobs:
   add-wrapper:
