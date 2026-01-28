@@ -10,28 +10,19 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '17'
-    
-    - name: Download and setup Gradle
+    - name: Download gradle-wrapper.jar from Gradle project
       run: |
-        cd /tmp
-        wget https://services.gradle.org/distributions/gradle-8.11.1-bin.zip
-        unzip -q gradle-8.11.1-bin.zip
-        export PATH=/tmp/gradle-8.11.1/bin:$PATH
-        gradle --version
+        mkdir -p gradle/wrapper
+        wget -O gradle/wrapper/gradle-wrapper.jar https://raw.githubusercontent.com/gradle/gradle/v8.11.1/gradle/wrapper/gradle-wrapper.jar
     
-    - name: Generate Gradle Wrapper files
+    - name: Download gradlew script
       run: |
-        export PATH=/tmp/gradle-8.11.1/bin:$PATH
-        cd $GITHUB_WORKSPACE
-        gradle wrapper --gradle-version 8.11.1 --distribution-type bin
+        wget -O gradlew https://raw.githubusercontent.com/gradle/gradle/v8.11.1/gradlew
+        chmod +x gradlew
     
-    - name: Make gradlew executable
-      run: chmod +x gradlew
+    - name: Download gradlew.bat script
+      run: |
+        wget -O gradlew.bat https://raw.githubusercontent.com/gradle/gradle/v8.11.1/gradlew.bat
     
     - name: Commit and push wrapper files
       run: |
