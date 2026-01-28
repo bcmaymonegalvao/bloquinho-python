@@ -30,7 +30,8 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       
       - name: Create keystore (if secrets provided)
-if: ${{ secrets.KEYSTORE_B64 != '' }}        run: |
+if: ${{ secrets.KEYSTORE_B64 != '' }} 
+ run: |
           echo "${{ secrets.KEYSTORE_B64 }}" | base64 -d > keystore.jks
       
       - name: Upload APK to Release
