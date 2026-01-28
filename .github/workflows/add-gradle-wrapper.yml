@@ -1,6 +1,9 @@
 name: Add Gradle Wrapper
 
 on:
+
+permissions:
+  contents: write
   workflow_dispatch:
 
 jobs:
