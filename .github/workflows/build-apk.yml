@@ -1,0 +1,149 @@
+name: Build and Release APK
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/**'
+      - 'build.gradle.kts'
+      - '.github/workflows/build-apk.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          api-levels: 34
+          ndk-version: 25.1.8937393
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build Release APK
+        run: |
+          ./gradlew assembleRelease
+        env:
+          ANDROID_SDK_ROOT: ${{ env.ANDROID_SDK_ROOT }}
+
+      - name: Find APK file
+        id: apk
+        run: |
+          APK_PATH=$(find . -name "*.apk" -type f | grep -E "app-release|app.*release" | head -1)
+          echo "apk_path=$APK_PATH" >> $GITHUB_OUTPUT
+          echo "apk_name=$(basename $APK_PATH)" >> $GITHUB_OUTPUT
+          ls -lh $APK_PATH
+
+      - name: Upload APK to Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: ${{ steps.apk.outputs.apk_path }}
+          tag: "v1.0.0"
+          name: "BloquinhoPy v1.0.0 - Release Build"
+          body: |
+            ## BloquinhoPy v1.0.0
+            
+            **Release Notes:**
+            - ✅ Phase 1: Core engine (Hilt DI, Room database, PythonEngine)
+            - ✅ Phase 2: UI integration (Jetpack Compose, Navigation, ViewModels)
+            - ✅ Phase 3: Advanced features (Python execution, error handling, theming)
+            - 🎯 Production ready Android IDE for Python notebooks
+            
+            **Features:**
+            - 🐍 Embedded Python execution with Chaquopy
+            - 📱 Jetpack Compose UI with Material 3 design
+            - 💾 Local SQLite database with Room ORM
+            - 📝 Notebook support (.ipynb format)
+            - 🎨 Light/Dark theme support
+            - 🌍 Multi-language (English/Portuguese)
+            
+            **System Requirements:**
+            - Android 8.0 (API 26) or higher
+            - Approximately 50MB storage
+            - 2GB RAM minimum
+            
+            **Installation:**
+            1. Download `BloquinhoPy.apk` from this release
+            2. Transfer to your Android device
+            3. Enable "Unknown Sources" in Settings > Security
+            4. Tap the APK to install
+            
+            **Build Information:**
+            - Built with: Gradle 8.7, Kotlin, Jetpack Compose
+            - Target SDK: Android 34
+            - Build Type: Release (optimized)
+          draft: false
+          prerelease: false
+          replacesArtifacts: false
+          allowUpdates: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Rename APK to BloquinhoPy.apk
+        run: |
+          APK_PATH=${{ steps.apk.outputs.apk_path }}
+          mv "$APK_PATH" "BloquinhoPy.apk"
+          
+      - name: Create Release with Renamed APK
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "BloquinhoPy.apk"
+          tag: "v1.0.0"
+          name: "BloquinhoPy v1.0.0"
+          body: |
+            # BloquinhoPy v1.0.0 - Python IDE for Android
+            
+            A professional Python Notebook IDE running natively on Android devices.
+            
+            ## 🎯 Features
+            - **Offline-First**: Works completely offline
+            - **Python 3**: Full Python execution with Chaquopy
+            - **Notebooks**: Create and edit .ipynb files
+            - **Material Design 3**: Modern Android UI
+            - **Multi-language**: English & Portuguese support
+            
+            ## 📱 System Requirements
+            - Android 8.0+ (API 26)
+            - 50MB free storage
+            - 2GB RAM
+            
+            ## 🚀 Installation
+            1. Download `BloquinhoPy.apk`
+            2. Enable "Unknown Sources" in device settings
+            3. Install the APK
+            4. Open and start coding!
+            
+            ## 📚 Documentation
+            - [README](https://github.com/bcmaymonegalvao/bloquinho-python/blob/main/README.md)
+            - [Architecture](https://github.com/bcmaymonegalvao/bloquinho-python/blob/main/docs/ARCHITECTURE.md)
+            - [Privacy Policy](https://github.com/bcmaymonegalvao/bloquinho-python/blob/main/docs/PRIVACY_POLICY.md)
+            
+            ---
+            **Version**: 1.0.0  
+            **Build Date**: ${{ github.event.head_commit.timestamp }}  
+            **Status**: ✅ Production Ready
+          draft: false
+          prerelease: false
+          replacesArtifacts: true
+          allowUpdates: true
+          omitBodyDuringUpdate: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
