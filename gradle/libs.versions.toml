@@ -35,3 +35,5 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 chaquopy = { id = "com.chaquo.python", version.ref = "chaquopy" }
+ksp = { id = "com.google.devtools.ksp", version = "2.3.0-2.0.1" }
+
