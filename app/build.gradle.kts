@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt)
     alias(libs.plugins.chaquopy)
-    id("org.jetbrains.kotlin.kapt")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -72,18 +72,17 @@ dependencies {
     implementation(libs.androidx.compose.material3)
 
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 }
 
 chaquopy {
-    defaultConfig {
-        python {
-            pip {
-                install("numpy")
-                install("pandas")
-                install("matplotlib")
-                install("streamlit")
-            }
-        }
+  defaultConfig {
+    pip {
+      install("numpy")
+      install("pandas")
+      install("matplotlib")
+      install("streamlit")
     }
+  }
 }
+
