@@ -75,6 +75,10 @@ dependencies {
     kapt("com.google.dagger:hilt-compiler:2.48")
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 chaquopy {
     defaultConfig {
         python {
