@@ -68,12 +68,11 @@ dependencies {
     androidTestImplementation(composeBom)
 
     implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.graphics)
-    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation("androidx.compose.ui:ui-tooling:1.7.0")
     implementation(libs.androidx.compose.material3)
 
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    kapt("com.google.dagger:hilt-compiler:2.48")
 }
 
 chaquopy {
