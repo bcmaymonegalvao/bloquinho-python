@@ -57,21 +57,21 @@ dependencies {
     implementation(project(":feature-projects"))
     implementation(project(":feature-github"))
     implementation(project(":runtime-python"))
-    
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.navigation.compose)
-    
+
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
     androidTestImplementation(composeBom)
-    
+
     implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.preview)
+    implementation(libs.androidx.compose.ui.graphics)
     debugImplementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.compose.material3)
-    
+
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 }
