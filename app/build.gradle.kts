@@ -72,11 +72,7 @@ dependencies {
     implementation(libs.androidx.compose.material3)
 
     implementation(libs.hilt.android)
-    kapt("com.google.dagger:hilt-compiler:2.48")
-}
-
-kapt {
-    correctErrorTypes = true
+    kapt(libs.hilt.compiler)
 }
 
 chaquopy {
